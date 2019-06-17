@@ -21,5 +21,5 @@ RUN git clone -b 2.x https://github.com/kitodo/kitodo-production.git \
   
 EXPOSE 8080
 
-CMD /bin/sed -i s/localhost/$KITODO_PROD_DB_PORT_3306_TCP_ADDR:$KITODO_PROD_DB_PORT_3306_TCP_PORT/ $TOMCATDIR/webapps/kitodo/WEB-INF/classes/hibernate.cfg.xml && \
+CMD /bin/sed -i s/localhost/$MYSQL_PORT_3306_TCP_ADDR:$MYSQL_PORT_3306_TCP_PORT/ $TOMCATDIR/webapps/kitodo/WEB-INF/classes/hibernate.cfg.xml && \
     catalina.sh run
