@@ -1,0 +1,19 @@
+version: '2'
+services:
+  db:
+    build: ./db
+    image: kitodo/database:latest
+    volumes:
+      - db:/var/lib/mysql
+  main:
+    build: .
+    image: kitodo/production:latest
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      - DB_ADDR=db
+    volumes:
+      - files:/usr/local/kitodo
+volumes:
+  db:
+  files:
