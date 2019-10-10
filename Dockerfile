@@ -11,18 +11,14 @@ WORKDIR /tmp
 RUN  apt-get -q update; apt-get -q install -y --no-install-recommends ant \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p "${KITODO_HOME}" \
-  && git clone -b 2.x https://github.com/kitodo/kitodo-production.git \
-  && cd kitodo-production \
-  && cp build.properties.template build.properties \
-  && echo "tomcat.dir.lib=${CATALINA_HOME}/lib" >> build.properties \
-  && ant \
-  && unzip -d "${CATALINA_HOME}"/webapps/kitodo dist/kitodo-production*.war \
-  && rm -f dist/kitodo-production*.war \
-  && cp -r Goobi/scripts "${KITODO_HOME}" \
-  && cd .. \
-  && rm -rf /tmp/kitodo-production \
-  && cd "${KITODO_HOME}" \
-  && mkdir -p config debug logs messages metadata plugins rulesets scripts swap tmp xslt
+  && wget -q https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-2.3.0/kitodo-production-2.3.0.war -O ${CATALINA_HOME}/webapps/kitodo.war \
+  && unzip -d ${CATALINA_HOME}/webapps/kitodo ${CATALINA_HOME}/webapps/kitodo.war \
+  && cp -r ${CATALINA_HOME}/webapps/kitodo/scripts "${KITODO_HOME}" \
+  && rm -f ${CATALINA_HOME}/webapps/kitodo.war \
+  && (cd "${KITODO_HOME}" && mkdir -p config debug logs messages metadata plugins rulesets scripts swap tmp xslt) \
+  && (cd ${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes && cp goobi_*.xml modules.xml ${KITODO_HOME}/config) \
+  && (cd ${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes && cp docket.xsl docket_multipage.xsl ${KITODO_HOME}/xslt) \
+  && cp ${CATALINA_HOME}/webapps/kitodo/rulesets/* ${KITODO_HOME}/rulesets
   
 EXPOSE 8080
 

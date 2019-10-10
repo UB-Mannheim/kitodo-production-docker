@@ -9,7 +9,10 @@ ENV MYSQL_USER=kitodo
 ENV MYSQL_PASSWORD=kitodo
 
 RUN  apt-get -q update \
-  && apt-get -q install -y --no-install-recommends ca-certificates wget \
+  && apt-get -q install -y --no-install-recommends ca-certificates unzip wget \
   && rm -rf /var/lib/apt/lists/* \
-  && wget -q https://raw.githubusercontent.com/kitodo/kitodo-production/2.x/Goobi/setup/schema.sql -O /docker-entrypoint-initdb.d/00_schema.sql \
-  && wget -q https://raw.githubusercontent.com/kitodo/kitodo-production/2.x/Goobi/setup/default.sql -O /docker-entrypoint-initdb.d/01_default.sql
+  && wget -q https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-2.3.0/kitodo-production-2.3.0.war \
+  && unzip -j kitodo-production-2.3.0.war database-setup/\* \
+  && mv schema.sql /docker-entrypoint-initdb.d/00_schema.sql \
+  && mv default.sql /docker-entrypoint-initdb.d/01_default.sql \
+  && rm -f kitodo-production-2.3.0.war
