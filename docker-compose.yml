@@ -1,19 +1,30 @@
 version: '2'
 services:
   db:
-    build: ./db
-    image: kitodo/database:2.3
+    image: mariadb:10.3
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=kitodo
+      - MYSQL_USER=kitodo
+      - MYSQL_PASSWORD=kitodo
     volumes:
-      - db:/var/lib/mysql
+      - ./database:/var/lib/mysql
+  elastic:
+    image: elasticsearch:5-alpine
+    environment:
+      - cluster.name=kitodo
+      - node.name=kitodo-1
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
   main:
     build: .
-    image: kitodo/production:2.3
+    image: kitodo/production:3.0-beta3
     ports:
       - "127.0.0.1:8080:8080"
     environment:
       - DB_ADDR=db
+      - ELASTIC_ADDR=elastic
     volumes:
-      - files:/usr/local/kitodo
-volumes:
-  db:
-  files:
+      - ./config:/usr/local/kitodo
+    depends_on:
+      - db
+      - elastic

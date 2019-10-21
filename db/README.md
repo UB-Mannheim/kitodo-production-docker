@@ -1,1 +1,0 @@
-# kitodo-production-db-docker
