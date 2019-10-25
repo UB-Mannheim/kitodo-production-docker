@@ -1,11 +1,11 @@
 #!/bin/sh
 
-[ -e "${KITODO_CONF}/config/modules.xml" ] || \
+[ -e "${KITODO_HOME}/config/modules.xml" ] || \
     (wget -q "${KITODO_CONF}" -O kitodo_config.zip \
          && unzip -n -d "${KITODO_HOME}" kitodo_config.zip \
          && rm -f kitodo_config.zip)
 
-[ -e "${KITODO_CONF}/modules" ] || \
+[ -e "${KITODO_HOME}/modules" ] || \
     (wget -q "${KITODO_MODS}" -O kitodo_mods.zip \
          && mkdir -p "${KITODO_CONF}/modules" \
          && unzip -n -j -d "${KITODO_HOME}/modules" kitodo_mods.zip \
