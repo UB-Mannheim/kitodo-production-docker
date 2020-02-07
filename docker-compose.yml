@@ -1,10 +1,14 @@
 version: '2'
 services:
   db:
-    build: ./db
-    image: kitodo/database:2.x
+    image: mariadb:10.1
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=kitodo
+      - MYSQL_USER=kitodo
+      - MYSQL_PASSWORD=kitodo
     volumes:
-      - db:/var/lib/mysql
+      - ./database:/var/lib/mysql
   main:
     build: .
     image: kitodo/production:2.x
@@ -13,7 +17,7 @@ services:
     environment:
       - DB_ADDR=db
     volumes:
-      - files:/usr/local/kitodo
-volumes:
-  db:
-  files:
+      - ./config:/usr/local/kitodo
+    depends_on:
+      - db
+  

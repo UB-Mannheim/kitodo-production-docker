@@ -8,7 +8,8 @@ ENV DB_PORT=3306
 ARG KITODO_HOME=/usr/local/kitodo
 
 WORKDIR /tmp
-RUN  apt-get -q update; apt-get -q install -y --no-install-recommends ant \
+RUN  apt-get -q update \
+  && apt-get -q install -y --no-install-recommends ant mariadb-client wget \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p "${KITODO_HOME}" \
   && git clone -b 2.x https://github.com/kitodo/kitodo-production.git \
@@ -21,10 +22,17 @@ RUN  apt-get -q update; apt-get -q install -y --no-install-recommends ant \
   && cp -r Goobi/scripts "${KITODO_HOME}" \
   && cd .. \
   && rm -rf /tmp/kitodo-production \
-  && cd "${KITODO_HOME}" \
-  && mkdir -p config debug logs messages metadata plugins rulesets scripts swap tmp xslt
+  && (cd "${KITODO_HOME}" && mkdir -p config debug logs messages metadata plugins rulesets scripts swap tmp xslt)
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /
+
+RUN  wget -q https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
+  && wget -q https://raw.githubusercontent.com/kitodo/kitodo-production/2.x/Goobi/setup/schema.sql \
+  && wget -q https://raw.githubusercontent.com/kitodo/kitodo-production/2.x/Goobi/setup/default.sql \
+  && chmod +x wait-for-it.sh \
+  && chmod +x /docker-entrypoint.sh
   
 EXPOSE 8080
 
-CMD /bin/sed -i "s,\(jdbc:mysql://\)[^/]*\(/.*\),\1${DB_ADDR}:${DB_PORT}\2," ${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes/hibernate.cfg.xml \
-  && catalina.sh run
+CMD catalina.sh run
