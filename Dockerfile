@@ -4,8 +4,7 @@ MAINTAINER Joerg Mechnich <joerg.mechnich@bib.uni-mannheim.de>
 
 ENV DB_ADDR=localhost
 ENV DB_PORT=3306
-
-ARG KITODO_HOME=/usr/local/kitodo
+ENV KITODO_HOME=/usr/local/kitodo
 
 WORKDIR /tmp
 RUN  apt-get -q update \
@@ -19,10 +18,8 @@ RUN  apt-get -q update \
   && ant \
   && unzip -d "${CATALINA_HOME}"/webapps/kitodo dist/kitodo-production*.war \
   && rm -f dist/kitodo-production*.war \
-  && cp -r Goobi/scripts "${KITODO_HOME}" \
   && cd .. \
-  && rm -rf /tmp/kitodo-production \
-  && (cd "${KITODO_HOME}" && mkdir -p config debug logs messages metadata plugins rulesets scripts swap tmp xslt)
+  && rm -rf /tmp/kitodo-production
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 COPY docker-entrypoint.sh /

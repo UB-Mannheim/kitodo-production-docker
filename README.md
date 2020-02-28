@@ -18,11 +18,27 @@ The Docker images were built by [Mannheim University Library](https://en.wikiped
 
 Run the latest Docker images like this:
 
-    docker run -d --name kitodo-database kitodo/database:latest
-    docker run -d -p 8888:8080 --name kitodo-production \
-               --link kitodo-database:mysql kitodo/production:latest
+    docker run -d \
+               -e MYSQL_RANDOM_ROOT_PASSWORD=yes \
+               -e MYSQL_DATABASE=kitodo \
+               -e MYSQL_USER=kitodo \
+               -e MYSQL_PASSWORD=kitodo \
+               -v $PWD/database:/var/lib/mysql \
+               --name kitodo-database mariadb:10.1
+    docker run -d \
+               -e DB_ADDR=kitodo-database \
+               --link kitodo-database:mysql \
+               -p 8888:8080 \
+               -v $PWD/config:/usr/local/kitodo \
+               --name kitodo-production kitodo/production:2.x
 
-Then Kitodo.Production can be accessed at http://localhost:8888/kitodo.
+Alternatively, the `docker-compose.yml` file provided in this repository can be downloaded and used to orchestrate the containers.
+
+Then Kitodo.Production can be accessed at http://localhost:8888/kitodo
+
+The default username is `admin` with password `kitodo`.
+
+
 
 ## Code and User Feedback
 
