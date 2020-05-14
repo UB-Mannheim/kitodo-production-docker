@@ -7,11 +7,11 @@ ENV DB_PORT=3306
 
 ENV KITODO_HOME=/usr/local/kitodo
 
-ENV KITODO_CONF=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.0.0-beta.2/kitodo-production-3.0.0-beta.2-config.zip
-ENV KITODO_MODS=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.0.0-beta.3/kitodo-production-3.0.0-beta.3-modules.zip
-ENV KITODO_SQL=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.0.0-beta.3/kitodo-production-3.0.0-beta.3.sql
+ENV KITODO_CONF=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.1.0/kitodo-production-3.1.0-config.zip
+ENV KITODO_MODS=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.1.0/kitodo-production-3.1.0-modules.zip
+ENV KITODO_SQL=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.1.0/kitodo-production-3.1.0.sql
 
-ARG KITODO_BASE=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.0.0-beta.3/kitodo-3.0.0-beta.3.war
+ARG KITODO_BASE=https://github.com/kitodo/kitodo-production/releases/download/kitodo-production-3.1.0/kitodo-3.1.0.war
 
 WORKDIR /tmp
 COPY docker-entrypoint.sh /

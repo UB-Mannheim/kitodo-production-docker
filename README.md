@@ -16,13 +16,19 @@ For more information, visit the [Kitodo homepage](https://www.kitodo.org). You c
 
 The Docker images were built by [Mannheim University Library](https://en.wikipedia.org/wiki/Mannheim_University_Library).
 
-Run the latest Docker images like this:
+Simply use docker-compose for setting up and running Kitodo:
 
-    docker run -d --name kitodo-database kitodo/database:latest
-    docker run -d -p 8888:8080 --name kitodo-production \
-               --link kitodo-database:mysql kitodo/production:latest
+    # retrieve images from Docker Hub
+    docker-compose pull
+    # optionally use --build for building image locally
+    docker-compose up -d
+    docker-compose logs -f
 
-Then Kitodo.Production can be accessed at http://localhost:8888/kitodo.
+If everything worked, Kitodo.Production can be accessed at http://localhost:8080/kitodo with initial credentials `testAdmin / test`.
+
+The config and database volumes are stored in the local directory by default. This can be changed in the `docker-compose.yml` file, as well as the port settings.
+
+The kitodo SQL database can be accessed with: `docker exec -ti kitodo-production-docker_db_1 mysql kitodo`
 
 ## Code and User Feedback
 
