@@ -1,0 +1,6 @@
+/.env
+/config/
+/database/
+/elastic/
+/docker-compose.yml
+/README.md

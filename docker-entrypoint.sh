@@ -1,15 +1,11 @@
 #!/bin/sh
 
-[ -e "${KITODO_CONF}/config/modules.xml" ] || \
-    (wget -q "${KITODO_CONF}" -O kitodo_config.zip \
-         && unzip -n -d "${KITODO_HOME}" kitodo_config.zip \
-         && rm -f kitodo_config.zip)
+[ -e "${KITODO_HOME}/config/modules.xml" ] \
+    || unzip -n -d "${KITODO_HOME}" /tmp/kitodo_config.zip
 
-[ -e "${KITODO_CONF}/modules" ] || \
-    (wget -q "${KITODO_MODS}" -O kitodo_mods.zip \
-         && mkdir -p "${KITODO_CONF}/modules" \
-         && unzip -n -j -d "${KITODO_HOME}/modules" kitodo_mods.zip \
-         && rm -f kitodo_mods.zip)
+[ -e "${KITODO_HOME}/modules" ] \
+    || (mkdir -p "${KITODO_HOME}/modules" \
+            && unzip -n -j -d "${KITODO_HOME}/modules" /tmp/kitodo_mods.zip)
 
 # Database configuration
 /bin/sed -i \
@@ -27,8 +23,7 @@
 # Initialize database if necessary
 echo "SELECT 1 FROM user LIMIT 1;" \
     | mysql -h "${DB_ADDR}" -P "${DB_PORT}" -u kitodo --password=kitodo kitodo >/dev/null 2>&1 \
-    || wget -q "${KITODO_SQL}" -O- \
-        | mysql -h "${DB_ADDR}" -P "${DB_PORT}" -u kitodo --password=kitodo kitodo
+    || mysql -h "${DB_ADDR}" -P "${DB_PORT}" -u kitodo --password=kitodo kitodo < /tmp/kitodo.sql
 
 # Run CMD
 "$@"
