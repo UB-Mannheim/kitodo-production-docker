@@ -1,6 +1,6 @@
 FROM tomcat:8-jdk8
 
-MAINTAINER Joerg Mechnich <joerg.mechnich@bib.uni-mannheim.de>
+MAINTAINER Joerg Mechnich <joerg.mechnich@uni-mannheim.de>
 
 ENV DB_ADDR=localhost
 ENV DB_PORT=3306
@@ -8,7 +8,12 @@ ENV KITODO_HOME=/usr/local/kitodo
 
 WORKDIR /tmp
 RUN  apt-get -q update \
-  && apt-get -q install -y --no-install-recommends ant mariadb-client wget \
+  && apt-get -q install -y --no-install-recommends \
+    ant \
+    git \
+    mariadb-client \
+    unzip \
+    wget \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p "${KITODO_HOME}" \
   && git clone -b 2.x https://github.com/kitodo/kitodo-production.git \

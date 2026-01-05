@@ -1,4 +1,3 @@
-version: '2'
 services:
   db:
     image: mariadb:10.1
@@ -9,8 +8,9 @@ services:
       - MYSQL_PASSWORD=kitodo
     volumes:
       - ./database:/var/lib/mysql
-  main:
-    build: .
+
+  app:
+    build: docker/
     image: kitodo/production:2.x
     ports:
       - "127.0.0.1:8080:8080"
@@ -20,4 +20,3 @@ services:
       - ./config:/usr/local/kitodo
     depends_on:
       - db
-  
