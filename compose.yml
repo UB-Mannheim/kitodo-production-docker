@@ -10,6 +10,7 @@ services:
       - MYSQL_PASSWORD=kitodo
     volumes:
       - ./database:/var/lib/mysql
+    restart: unless-stopped
 
   app:
     build: docker/
@@ -20,5 +21,6 @@ services:
       - DB_ADDR=db
     volumes:
       - ./config:/usr/local/kitodo
+    restart: unless-stopped
     depends_on:
       - db
