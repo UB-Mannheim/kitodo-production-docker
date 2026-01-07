@@ -8,6 +8,7 @@ ENV KITODO_HOME=/usr/local/kitodo
 
 WORKDIR /tmp
 RUN  apt-get -q update \
+  && apt-get dist-upgrade -y \
   && apt-get -q install -y --no-install-recommends \
     ant \
     git \
