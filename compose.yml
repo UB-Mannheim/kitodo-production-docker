@@ -4,6 +4,7 @@ services:
   db:
     image: mariadb:10.1
     environment:
+      - TZ=Europe/Berlin
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
       - MYSQL_DATABASE=kitodo
       - MYSQL_USER=kitodo
@@ -18,7 +19,10 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     environment:
+      - TZ=Europe/Berlin
       - DB_ADDR=db
+      # https://anwenderdoku.readthedocs.io/de/latest/GettingStarted/installing/Installationsanleitung-f%C3%BCr-Kitodo.Production-2.0/
+      - JAVA_OPTS=-Djava.awt.headless=true -Xmx4G -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC -Dlog4j2.formatMsgNoLookups=true
     volumes:
       - ./config:/usr/local/kitodo
     restart: unless-stopped
