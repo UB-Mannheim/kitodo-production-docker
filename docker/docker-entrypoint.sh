@@ -14,17 +14,17 @@ echo "SELECT 1 FROM benutzer LIMIT 1;" \
 # create/update configuration directory structure if necessary
 (cd "${KITODO_HOME}"; mkdir -p config debug logs messages metadata plugins rulesets scripts swap tmp xslt)
 # config
-cp -ru "${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes"/goobi_*.xml "${KITODO_HOME}/config"
-cp -ru "${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes"/modules.xml "${KITODO_HOME}/config"
+cp -n "${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes"/goobi_*.xml "${KITODO_HOME}/config"
+cp -n "${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes"/modules.xml "${KITODO_HOME}/config"
 # plugins
-cp -ru "${CATALINA_HOME}/webapps/kitodo/plugins" "${KITODO_HOME}"
+cp -r "${CATALINA_HOME}/webapps/kitodo/plugins" "${KITODO_HOME}"
 # rulesets
-cp -ru "${CATALINA_HOME}/webapps/kitodo/rulesets" "${KITODO_HOME}"
+cp -rn "${CATALINA_HOME}/webapps/kitodo/rulesets" "${KITODO_HOME}"
 # scripts
-cp -ru "${CATALINA_HOME}/webapps/kitodo/scripts" "${KITODO_HOME}"
+cp -rn "${CATALINA_HOME}/webapps/kitodo/scripts" "${KITODO_HOME}"
 chmod +x "${KITODO_HOME}"/scripts/*
 # xslt
-cp -ru "${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes"/docket*.xsl "${KITODO_HOME}/xslt"
+cp -n "${CATALINA_HOME}/webapps/kitodo/WEB-INF/classes"/docket*.xsl "${KITODO_HOME}/xslt"
 
 # Run CMD
 "$@"
